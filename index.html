@@ -33,7 +33,7 @@
         .current-weather {
             background: #a4373a;
             color: white;
-            padding: 15px 25px; /* Reduced from 30px 40px */
+            padding: 0 25px; /* Reduced from 30px 40px */
             min-width: 220px; /* Reduced from 280px */
             display: flex;
             flex-direction: column;
@@ -45,7 +45,7 @@
         .location-name {
             font-size: 13px; /* Reduced from 16px */
             font-weight: 400;
-            margin-bottom: 10px; /* Reduced from 20px */
+            margin-bottom: 5px; /* Reduced from 20px */
             opacity: 0.95;
         }
 
@@ -57,12 +57,12 @@
         }
 
         .current-icon {
-            font-size: 38px; /* Reduced from 56px */
+            font-size: 35px; /* Reduced from 56px */
             line-height: 1;
         }
 
         .current-temp {
-            font-size: 42px; /* Reduced from 64px */
+            font-size: 38px; /* Reduced from 64px */
             font-weight: 300;
             line-height: 1;
         }
@@ -82,8 +82,8 @@
         .current-meta {
             display: flex;
             gap: 10px; /* Reduced from 15px */
-            font-size: 11px; /* Reduced from 13px */
-            opacity: 0.85;
+            font-size: 13px; /* Reduced from 13px */
+            opacity: 0.95;
             margin-top: 0; /* Reduced from 10px */
             position: relative;
             cursor: help;
@@ -91,7 +91,7 @@
 
         .forecast-section {
             flex: 1;
-            padding: 12px 20px; /* Reduced from 20px 30px */
+            padding: 0 20px; /* Reduced from 20px 30px */
             background: white;
             display: flex;
             flex-direction: column;
@@ -476,7 +476,7 @@
                     <div class="current-condition">${current.description.charAt(0).toUpperCase() + current.description.slice(1)}</div>
                     <div class="current-meta" title="${isCached ? 'Hover to see cache info' : 'Live data'}">
                         ${current.high}${degreeSymbol}/${current.low}${degreeSymbol}
-                        <span>on ${current.date}</span>
+                        <span>${current.date}</span>
                         ${cacheIndicator}
                     </div>
                 </div>
