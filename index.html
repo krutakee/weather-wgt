@@ -197,26 +197,6 @@
             margin-bottom: 6px; /* Reduced from 8px */
         }
 
-        /* Cache indicator - hidden by default, shows on hover */
-        .cache-indicator {
-            font-size: 9px; /* Reduced from 11px */
-            opacity: 0;
-            margin-top: 3px;
-            transition: opacity 0.3s ease;
-            color: rgba(255, 255, 255, 0.7);
-            position: absolute;
-            bottom: -18px;
-            left: 0;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 6px;
-            border-radius: 3px;
-            white-space: nowrap;
-        }
-
-        .current-meta:hover .cache-indicator {
-            opacity: 1;
-        }
-
         .forecast-list::-webkit-scrollbar {
             height: 4px; /* Reduced from 6px */
         }
@@ -462,7 +442,7 @@
 
             // Cache indicator with title attribute
             const cacheIndicator = isCached ? 
-                `<div class="cache-indicator" title="Data cached ${cacheAge} seconds ago">📦 Cached (${cacheAge}s ago)</div>` : '';
+                `${cacheAge} seconds ago` : '';
 
             widget.innerHTML = `
                 <div class="current-weather">
@@ -474,10 +454,9 @@
                         </div>
                     </div>
                     <div class="current-condition">${current.description.charAt(0).toUpperCase() + current.description.slice(1)}</div>
-                    <div class="current-meta" title="${isCached ? 'Hover to see cache info' : 'Live data'}">
+                    <div class="current-meta" title="${isCached ? ${cacheIndicator} : 'Live data'}">
                         ${current.high}${degreeSymbol}/${current.low}${degreeSymbol}
                         <span>${current.date}</span>
-                        ${cacheIndicator}
                     </div>
                 </div>
                 <div class="forecast-section">
