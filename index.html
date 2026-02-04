@@ -316,7 +316,7 @@
                 localStorage.setItem(CACHE_KEY_CURRENT, JSON.stringify(currentData));
                 localStorage.setItem(CACHE_KEY_FORECAST, JSON.stringify(forecastData));
                 localStorage.setItem(CACHE_KEY_TIMESTAMP, Date.now().toString());
-                console.log('Weather data cached for 5 minutes');
+                console.log('Weather data cached for 15 minutes');
             } catch (error) {
                 console.log('Cache write error:', error);
             }
