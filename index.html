@@ -11,11 +11,14 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: transparent;
             padding: 0;
             margin: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
         }
 
         .weather-widget {
@@ -23,94 +26,101 @@
             background: transparent;
             max-width: 100%;
             margin: 0;
+            height: 100%;
+            overflow: hidden;
         }
 
         .current-weather {
             background: #a4373a;
             color: white;
-            padding: 30px 40px;
-            min-width: 280px;
+            padding: 15px 25px; /* Reduced from 30px 40px */
+            min-width: 220px; /* Reduced from 280px */
             display: flex;
             flex-direction: column;
             justify-content: center;
             border-radius: 4px 0 0 4px;
+            overflow: hidden;
         }
 
         .location-name {
-            font-size: 16px;
+            font-size: 13px; /* Reduced from 16px */
             font-weight: 400;
-            margin-bottom: 20px;
+            margin-bottom: 12px; /* Reduced from 20px */
             opacity: 0.95;
         }
 
         .current-temp-container {
             display: flex;
             align-items: center;
-            gap: 20px;
-            margin-bottom: 15px;
+            gap: 12px; /* Reduced from 20px */
+            margin-bottom: 8px; /* Reduced from 15px */
         }
 
         .current-icon {
-            font-size: 56px;
+            font-size: 38px; /* Reduced from 56px */
             line-height: 1;
         }
 
         .current-temp {
-            font-size: 64px;
+            font-size: 42px; /* Reduced from 64px */
             font-weight: 300;
             line-height: 1;
         }
 
         .temp-unit {
-            font-size: 28px;
+            font-size: 20px; /* Reduced from 28px */
             font-weight: 300;
             vertical-align: top;
         }
 
         .current-condition {
-            font-size: 15px;
+            font-size: 13px; /* Reduced from 15px */
             font-weight: 400;
-            margin-bottom: 8px;
+            margin-bottom: 5px; /* Reduced from 8px */
         }
 
         .current-range {
-            font-size: 14px;
+            font-size: 12px; /* Reduced from 14px */
             font-weight: 400;
             opacity: 0.9;
-            margin-bottom: 12px;
+            margin-bottom: 8px; /* Reduced from 12px */
         }
 
         .current-meta {
             display: flex;
-            gap: 15px;
-            font-size: 13px;
+            gap: 10px; /* Reduced from 15px */
+            font-size: 11px; /* Reduced from 13px */
             opacity: 0.85;
-            margin-top: 10px;
+            margin-top: 6px; /* Reduced from 10px */
+            position: relative;
+            cursor: help;
         }
 
         .forecast-section {
             flex: 1;
-            padding: 20px 30px;
+            padding: 12px 20px; /* Reduced from 20px 30px */
             background: white;
             display: flex;
             flex-direction: column;
             border-radius: 0 4px 4px 0;
+            overflow: hidden;
         }
 
         .forecast-list {
             display: flex;
-            gap: 20px;
+            gap: 12px; /* Reduced from 20px */
             overflow-x: auto;
-            padding: 10px 0;
+            overflow-y: hidden;
+            padding: 6px 0; /* Reduced from 10px 0 */
         }
 
         .forecast-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 16px 20px;
+            padding: 10px 14px; /* Reduced from 16px 20px */
             border-right: 1px solid #edebe9;
-            min-width: 120px;
+            min-width: 90px; /* Reduced from 120px */
             transition: background 0.2s ease;
             flex: 1;
         }
@@ -125,35 +135,35 @@
         }
 
         .forecast-day {
-            font-size: 14px;
+            font-size: 12px; /* Reduced from 14px */
             font-weight: 600;
             color: #323130;
-            margin-bottom: 12px;
+            margin-bottom: 8px; /* Reduced from 12px */
         }
 
         .forecast-icon {
-            font-size: 36px;
-            margin: 8px 0;
+            font-size: 28px; /* Reduced from 36px */
+            margin: 4px 0; /* Reduced from 8px 0 */
         }
 
         .forecast-description {
-            font-size: 12px;
+            font-size: 10px; /* Reduced from 12px */
             color: #605e5c;
             text-align: center;
             text-transform: capitalize;
-            margin: 8px 0;
-            min-height: 32px;
+            margin: 4px 0; /* Reduced from 8px 0 */
+            min-height: 24px; /* Reduced from 32px */
             display: flex;
             align-items: center;
         }
 
         .forecast-temps {
             display: flex;
-            gap: 8px;
-            font-size: 14px;
+            gap: 6px; /* Reduced from 8px */
+            font-size: 12px; /* Reduced from 14px */
             font-weight: 500;
             color: #323130;
-            margin-top: 8px;
+            margin-top: 4px; /* Reduced from 8px */
         }
 
         .temp-high {
@@ -170,48 +180,62 @@
         }
 
         .loading {
-            padding: 40px;
+            padding: 30px; /* Reduced from 40px */
             text-align: center;
             color: #605e5c;
-            font-size: 14px;
+            font-size: 13px; /* Reduced from 14px */
             background: white;
             border-radius: 4px;
         }
 
         .error {
-            padding: 30px;
+            padding: 20px; /* Reduced from 30px */
             background: #fef0f1;
             color: #a4373a;
             border-left: 4px solid #a4373a;
-            margin: 20px;
-            font-size: 14px;
+            margin: 15px; /* Reduced from 20px */
+            font-size: 12px; /* Reduced from 14px */
             line-height: 1.6;
             border-radius: 4px;
         }
 
         .error-title {
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px; /* Reduced from 8px */
         }
 
+        /* Cache indicator - hidden by default, shows on hover */
         .cache-indicator {
-            font-size: 11px;
-            opacity: 0.7;
-            margin-top: 5px;
+            font-size: 9px; /* Reduced from 11px */
+            opacity: 0;
+            margin-top: 3px;
+            transition: opacity 0.3s ease;
+            color: rgba(255, 255, 255, 0.7);
+            position: absolute;
+            bottom: -18px;
+            left: 0;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+
+        .current-meta:hover .cache-indicator {
+            opacity: 1;
         }
 
         .forecast-list::-webkit-scrollbar {
-            height: 6px;
+            height: 4px; /* Reduced from 6px */
         }
 
         .forecast-list::-webkit-scrollbar-track {
             background: #f1f1f1;
-            border-radius: 3px;
+            border-radius: 2px; /* Reduced from 3px */
         }
 
         .forecast-list::-webkit-scrollbar-thumb {
             background: #d2d0ce;
-            border-radius: 3px;
+            border-radius: 2px; /* Reduced from 3px */
         }
 
         .forecast-list::-webkit-scrollbar-thumb:hover {
@@ -229,12 +253,12 @@
             }
 
             .forecast-section {
-                padding: 20px;
+                padding: 12px; /* Reduced from 20px */
                 border-radius: 0 0 4px 4px;
             }
 
             .forecast-item {
-                min-width: 100px;
+                min-width: 75px; /* Reduced from 100px */
             }
         }
     </style>
@@ -443,8 +467,9 @@
                 `;
             }).join('');
 
+            // Cache indicator with title attribute
             const cacheIndicator = isCached ? 
-                `<div class="cache-indicator">📦 Cached (${cacheAge}s ago)</div>` : '';
+                `<div class="cache-indicator" title="Data cached ${cacheAge} seconds ago">📦 Cached (${cacheAge}s ago)</div>` : '';
 
             widget.innerHTML = `
                 <div class="current-weather">
@@ -457,10 +482,10 @@
                     </div>
                     <div class="current-condition">${current.description.charAt(0).toUpperCase() + current.description.slice(1)}</div>
                     <div class="current-range">${current.high}${degreeSymbol}/${current.low}${degreeSymbol}</div>
-                    <div class="current-meta">
+                    <div class="current-meta" title="${isCached ? 'Hover to see cache info' : 'Live data'}">
                         <span>${current.date}</span>
+                        ${cacheIndicator}
                     </div>
-                    ${cacheIndicator}
                 </div>
                 <div class="forecast-section">
                     <div class="forecast-list">
@@ -476,7 +501,7 @@
                 <div class="error">
                     <div class="error-title">Unable to load weather data</div>
                     <div>${message}</div>
-                    <div style="margin-top: 12px; font-size: 13px;">
+                    <div style="margin-top: 10px; font-size: 11px;">
                         • Check your API key is correct and active<br>
                         • New API keys may take 10 minutes to activate<br>
                         • Location: ${config.zip || `${config.city}, ${config.state}`}<br>
