@@ -25,7 +25,6 @@
             margin: 0;
         }
 
-        /* Current Weather - Left Side */
         .current-weather {
             background: #a4373a;
             color: white;
@@ -89,7 +88,6 @@
             margin-top: 10px;
         }
 
-        /* Forecast - Right Side */
         .forecast-section {
             flex: 1;
             padding: 20px 30px;
@@ -196,7 +194,12 @@
             margin-bottom: 8px;
         }
 
-        /* Scrollbar for horizontal forecast */
+        .cache-indicator {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
         .forecast-list::-webkit-scrollbar {
             height: 6px;
         }
@@ -215,7 +218,6 @@
             background: #a19f9d;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .weather-widget {
                 flex-direction: column;
@@ -243,10 +245,8 @@
     </div>
 
     <script>
-        // Configuration
         const API_KEY = 'd1ecc9501979b4fde5c87fff251e25d2';
         
-        // Parse URL parameters
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
@@ -261,9 +261,12 @@
         const config = getUrlParams();
         const UNITS = config.units;
 
-        console.log('Widget loaded with config:', config);
+        // Cache configuration
+        const CACHE_KEY_CURRENT = 'weather_cache_current_' + (config.zip || config.city);
+        const CACHE_KEY_FORECAST = 'weather_cache_forecast_' + (config.zip || config.city);
+        const CACHE_KEY_TIMESTAMP = 'weather_cache_time_' + (config.zip || config.city);
+        const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
-        // Weather icon mapping
         const weatherIcons = {
             'Clear': '☀️',
             'Clouds': '☁️',
@@ -282,17 +285,52 @@
             'Tornado': '🌪️'
         };
 
+        function getCachedData() {
+            try {
+                const timestamp = localStorage.getItem(CACHE_KEY_TIMESTAMP);
+                const now = Date.now();
+                
+                if (timestamp && (now - parseInt(timestamp)) < CACHE_DURATION) {
+                    const currentData = localStorage.getItem(CACHE_KEY_CURRENT);
+                    const forecastData = localStorage.getItem(CACHE_KEY_FORECAST);
+                    
+                    if (currentData && forecastData) {
+                        const age = Math.round((now - parseInt(timestamp)) / 1000);
+                        console.log(`Using cached data (${age}s old)`);
+                        return {
+                            current: JSON.parse(currentData),
+                            forecast: JSON.parse(forecastData),
+                            cached: true,
+                            age: age
+                        };
+                    }
+                }
+            } catch (error) {
+                console.log('Cache read error:', error);
+            }
+            return null;
+        }
+
+        function setCachedData(currentData, forecastData) {
+            try {
+                localStorage.setItem(CACHE_KEY_CURRENT, JSON.stringify(currentData));
+                localStorage.setItem(CACHE_KEY_FORECAST, JSON.stringify(forecastData));
+                localStorage.setItem(CACHE_KEY_TIMESTAMP, Date.now().toString());
+                console.log('Weather data cached for 5 minutes');
+            } catch (error) {
+                console.log('Cache write error:', error);
+            }
+        }
+
         async function fetchCurrentWeather() {
             const apiUrls = [];
             
-            // If ZIP code is provided, prioritize it
             if (config.zip) {
                 apiUrls.push(
                     `https://api.openweathermap.org/data/2.5/weather?zip=${config.zip},${config.country}&appid=${API_KEY}&units=${UNITS}`
                 );
             }
             
-            // Try different city formats
             apiUrls.push(
                 `https://api.openweathermap.org/data/2.5/weather?q=${config.city},${config.state},${config.country}&appid=${API_KEY}&units=${UNITS}`,
                 `https://api.openweathermap.org/data/2.5/weather?q=${config.city},${config.country}&appid=${API_KEY}&units=${UNITS}`,
@@ -301,7 +339,6 @@
 
             for (const url of apiUrls) {
                 try {
-                    console.log('Trying:', url);
                     const response = await fetch(url);
                     if (response.ok) {
                         return await response.json();
@@ -316,14 +353,12 @@
         async function fetchForecastWeather() {
             const apiUrls = [];
             
-            // If ZIP code is provided, prioritize it
             if (config.zip) {
                 apiUrls.push(
                     `https://api.openweathermap.org/data/2.5/forecast?zip=${config.zip},${config.country}&appid=${API_KEY}&units=${UNITS}`
                 );
             }
             
-            // Try different city formats
             apiUrls.push(
                 `https://api.openweathermap.org/data/2.5/forecast?q=${config.city},${config.state},${config.country}&appid=${API_KEY}&units=${UNITS}`,
                 `https://api.openweathermap.org/data/2.5/forecast?q=${config.city},${config.country}&appid=${API_KEY}&units=${UNITS}`,
@@ -337,7 +372,7 @@
                         return await response.json();
                     }
                 } catch (error) {
-                    console.log('Forecast fetch attempt failed:', error);
+                    console.log('Forecast fetch failed:', error);
                 }
             }
             throw new Error('Unable to fetch forecast');
@@ -363,7 +398,6 @@
                 dailyForecasts[dateKey].conditions.push(item.weather[0].main);
             });
 
-            // Skip today (first entry) and get next 5 days
             const days = Object.values(dailyForecasts).slice(1, 6);
             
             return days.map(day => ({
@@ -376,7 +410,7 @@
             }));
         }
 
-        function displayWeather(currentData, forecastData) {
+        function displayWeather(currentData, forecastData, isCached = false, cacheAge = 0) {
             const widget = document.getElementById('weatherWidget');
             const degreeSymbol = '°';
             const tempUnitDisplay = UNITS === 'metric' ? 'C' : 'F';
@@ -409,6 +443,9 @@
                 `;
             }).join('');
 
+            const cacheIndicator = isCached ? 
+                `<div class="cache-indicator">📦 Cached (${cacheAge}s ago)</div>` : '';
+
             widget.innerHTML = `
                 <div class="current-weather">
                     <div class="location-name">${current.location}</div>
@@ -423,6 +460,7 @@
                     <div class="current-meta">
                         <span>${current.date}</span>
                     </div>
+                    ${cacheIndicator}
                 </div>
                 <div class="forecast-section">
                     <div class="forecast-list">
@@ -441,7 +479,7 @@
                     <div style="margin-top: 12px; font-size: 13px;">
                         • Check your API key is correct and active<br>
                         • New API keys may take 10 minutes to activate<br>
-                        • Verify location: ${config.zip || `${config.city}, ${config.state}`}<br>
+                        • Location: ${config.zip || `${config.city}, ${config.state}`}<br>
                         • Open browser console (F12) for details
                     </div>
                 </div>
@@ -451,19 +489,29 @@
         async function init() {
             try {
                 if (API_KEY === 'YOUR_API_KEY_HERE') {
-                    displayError('Please add your OpenWeatherMap API key to the code');
+                    displayError('Please add your OpenWeatherMap API key');
                     return;
                 }
 
-                console.log('Fetching weather data...');
+                // Try cache first
+                const cachedData = getCachedData();
+                if (cachedData) {
+                    const forecastData = processForecastData(cachedData.forecast);
+                    displayWeather(cachedData.current, forecastData, true, cachedData.age);
+                    return;
+                }
+
+                console.log('Fetching fresh weather data...');
                 
                 const [currentData, forecastDataRaw] = await Promise.all([
                     fetchCurrentWeather(),
                     fetchForecastWeather()
                 ]);
 
+                setCachedData(currentData, forecastDataRaw);
+
                 const forecastData = processForecastData(forecastDataRaw);
-                displayWeather(currentData, forecastData);
+                displayWeather(currentData, forecastData, false, 0);
                 
                 console.log('Weather data loaded successfully');
             } catch (error) {
@@ -472,11 +520,8 @@
             }
         }
 
-        // Initialize
         init();
-
-        // Refresh every 30 minutes
-        setInterval(init, 30 * 60 * 1000);
+        setInterval(init, 30 * 60 * 1000); // Refresh every 30 minutes
     </script>
 </body>
 </html>
