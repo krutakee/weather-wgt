@@ -79,13 +79,6 @@
             margin-bottom: 0; /* Reduced from 8px */
         }
 
-        .current-range {
-            font-size: 12px; /* Reduced from 14px */
-            font-weight: 400;
-            opacity: 0.9;
-            margin-bottom: 0; /* Reduced from 12px */
-        }
-
         .current-meta {
             display: flex;
             gap: 10px; /* Reduced from 15px */
@@ -481,9 +474,9 @@
                         </div>
                     </div>
                     <div class="current-condition">${current.description.charAt(0).toUpperCase() + current.description.slice(1)}</div>
-                    <div class="current-range">${current.high}${degreeSymbol}/${current.low}${degreeSymbol}</div>
                     <div class="current-meta" title="${isCached ? 'Hover to see cache info' : 'Live data'}">
-                        <span>${current.date}</span>
+                        ${current.high}${degreeSymbol}/${current.low}${degreeSymbol}
+                        <span>on ${current.date}</span>
                         ${cacheIndicator}
                     </div>
                 </div>
