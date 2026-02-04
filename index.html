@@ -296,7 +296,7 @@
                     
                     if (currentData && forecastData) {
                         const age = Math.round((now - parseInt(timestamp)) / 1000);
-                        console.log(`Using cached data (${age}s old)`);
+                        console.log(`Weather data - Using cached data (${age}s old)`);
                         return {
                             current: JSON.parse(currentData),
                             forecast: JSON.parse(forecastData),
@@ -316,9 +316,9 @@
                 localStorage.setItem(CACHE_KEY_CURRENT, JSON.stringify(currentData));
                 localStorage.setItem(CACHE_KEY_FORECAST, JSON.stringify(forecastData));
                 localStorage.setItem(CACHE_KEY_TIMESTAMP, Date.now().toString());
-                console.log('Weather data cached for 15 minutes');
+                console.log('Weather data - Cached for 15 minutes');
             } catch (error) {
-                console.log('Cache write error:', error);
+                console.log('Weather data - Cache write error:', error);
             }
         }
 
@@ -344,10 +344,10 @@
                         return await response.json();
                     }
                 } catch (error) {
-                    console.log('Fetch attempt failed:', error);
+                    console.log('Weather data - Fetch attempt failed:', error);
                 }
             }
-            throw new Error('Unable to fetch current weather');
+            throw new Error('Weather data - Unable to fetch current weather');
         }
 
         async function fetchForecastWeather() {
@@ -372,10 +372,10 @@
                         return await response.json();
                     }
                 } catch (error) {
-                    console.log('Forecast fetch failed:', error);
+                    console.log('Weather data - Forecast fetch failed:', error);
                 }
             }
-            throw new Error('Unable to fetch forecast');
+            throw new Error('Weather data - Unable to fetch forecast');
         }
 
         function processForecastData(data) {
